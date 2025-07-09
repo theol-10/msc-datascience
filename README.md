@@ -11,19 +11,7 @@ In today’s digital world, vast amounts of data are generated every day—from 
 
 The MSc in Fundamental Principles of Data Science is designed to provide us with a solid theoretical and practical foundation in the mathematical and algorithmic principles that underpin data modeling and analysis. The program is meant to equip students with the skills needed to tackle real-world data challenges, emphasizing the ability to understand, modify, and design algorithms to fit specific problem contexts.
 
-Course content spans a wide range of advanced topics, including:
+Course content spans a wide range of advanced topics, as can be seen from the files in this repository.
 
-Computational algebra
-
-Optimization and probabilistic programming
-
-Machine learning and deep learning
-
-Complex networks and recommendation systems
-
-Natural language processing and time series analysis
-
-Image data extraction
-
-Infrastructure support for big data processing
+For my final project/thesis please check the repository here: https://github.com/theol-10/datascience-thesis
 
