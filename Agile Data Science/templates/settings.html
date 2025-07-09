@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Recommendations | Movie Magic</title>
+    <style>
+        /* General styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: rgb(45, 45, 45); /* Dark gray background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        /* Carousel container styling */
+        .carousel-container {
+            position: relative;
+            width: 320px; /* Slightly larger width for movie posters */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Hide content outside the visible area */
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .movie-card {
+            min-width: 300px; /* Slightly smaller than the container width */
+            text-align: center;
+            margin: 0 10px;
+            background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent background */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6); /* Shadow effect */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 400px; /* Fixed height for movie posters */
+            object-fit: cover;
+            border-bottom: 2px solid white;
+        }
+
+        .movie-card h2 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .movie-card p {
+            font-size: 1rem;
+            color: lightgray;
+            margin: 10px 15px;
+        }
+
+        /* Arrow navigation buttons */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1;
+            padding: 10px 20px;
+            border-radius: 50%;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .arrow:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .arrow.left {
+            left: 10px;
+        }
+
+        .arrow.right {
+            right: 10px;
+        }
+
+        /* Edit link styling */
+        .edit-link {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .edit-link:hover {
+            color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Recommendations</h1>
+    <div class="carousel-container">
+        <button class="arrow left" onclick="scrollCarousel(-1)">&#8249;</button>
+        <div class="carousel">
+            {% for recommendation in recommendations %}
+            <div class="movie-card">
+                <img src="{{ recommendation.image }}" alt="{{ recommendation.title }}">
+                <h2>{{ recommendation.title }}</h2>
+                <p>{{ recommendation.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="arrow right" onclick="scrollCarousel(1)">&#8250;</button>
+    </div>
+    <a href="/questionnaire" class="edit-link">Edit Quiz Answers</a>
+
+    <script>
+        let currentIndex = 0; // Index to track the current movie
+        const carousel = document.querySelector('.carousel');
+        const movieCards = document.querySelectorAll('.movie-card');
+
+        // Function to scroll the carousel
+        function scrollCarousel(direction) {
+            const totalMovies = movieCards.length;
+            const cardWidth = movieCards[0].offsetWidth + 20; // Include margin
+
+            // Calculate the next index
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = totalMovies - 1; // Wrap around to the last movie
+            } else if (currentIndex >= totalMovies) {
+                currentIndex = 0; // Wrap around to the first movie
+            }
+
+            // Translate the carousel
+            const offset = -currentIndex * cardWidth;
+            carousel.style.transform = `translateX(${offset}px)`;
+        }
+    </script>
+</body>
+</html>

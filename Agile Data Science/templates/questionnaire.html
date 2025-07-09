@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire | Movie Magic</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgb(45, 45, 45); /* Dark gray background */
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+        }
+
+        .questionnaire-container {
+            background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row; /* Ensure stars are left-to-right */
+        }
+
+        .star-rating label {
+            font-size: 1.5rem;
+            color: gray;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .questionnaire-container button {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .questionnaire-container button:hover {
+            background-color: darkred;
+        }
+    </style>
+    <script>
+        // JavaScript to handle hover and click for stars
+        function highlightStars(event, optionIndex, isClick) {
+            const starRating = document.querySelectorAll(`.star-rating[data-option="${optionIndex}"] label`);
+            const value = parseInt(event.target.getAttribute('data-value'));
+
+            // Reset all stars
+            starRating.forEach(label => {
+                label.style.color = "gray";
+            });
+
+            // Highlight selected stars
+            for (let i = 0; i < value; i++) {
+                starRating[i].style.color = "gold";
+            }
+
+            // Only update the hidden input on a click
+            if (isClick) {
+                document.getElementById(`rating-${optionIndex}`).value = value;
+            }
+        }
+
+        // Reset stars to the clicked state when not hovering
+        function resetStars(optionIndex) {
+            const starRating = document.querySelectorAll(`.star-rating[data-option="${optionIndex}"] label`);
+            const value = parseInt(document.getElementById(`rating-${optionIndex}`).value);
+
+            // Reset all stars
+            starRating.forEach(label => {
+                label.style.color = "gray";
+            });
+
+            // Highlight only up to the selected rating
+            for (let i = 0; i < value; i++) {
+                starRating[i].style.color = "gold";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Movie Magic</h1>
+    </header>
+
+    <div class="questionnaire-container">
+        <h1>Question {{ current_question }} of {{ total_questions }}</h1>
+        <p>{{ question }}</p>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            {% for option in options %}
+            <div class="option">
+                <p>{{ option }}</p>
+                <div class="star-rating" data-option="{{ loop.index0 }}">
+                    <!-- Left-to-right order with custom data-value attributes -->
+                    <label data-value="1" onmouseover="highlightStars(event, {{ loop.index0 }}, false)" 
+                           onclick="highlightStars(event, {{ loop.index0 }}, true)" 
+                           onmouseout="resetStars({{ loop.index0 }})">&#9733;</label>
+                    <label data-value="2" onmouseover="highlightStars(event, {{ loop.index0 }}, false)" 
+                           onclick="highlightStars(event, {{ loop.index0 }}, true)" 
+                           onmouseout="resetStars({{ loop.index0 }})">&#9733;</label>
+                    <label data-value="3" onmouseover="highlightStars(event, {{ loop.index0 }}, false)" 
+                           onclick="highlightStars(event, {{ loop.index0 }}, true)" 
+                           onmouseout="resetStars({{ loop.index0 }})">&#9733;</label>
+                    <label data-value="4" onmouseover="highlightStars(event, {{ loop.index0 }}, false)" 
+                           onclick="highlightStars(event, {{ loop.index0 }}, true)" 
+                           onmouseout="resetStars({{ loop.index0 }})">&#9733;</label>
+                    <label data-value="5" onmouseover="highlightStars(event, {{ loop.index0 }}, false)" 
+                           onclick="highlightStars(event, {{ loop.index0 }}, true)" 
+                           onmouseout="resetStars({{ loop.index0 }})">&#9733;</label>
+                </div>
+                <!-- Hidden input to store the selected rating -->
+                <input type="hidden" id="rating-{{ loop.index0 }}" name="rating-{{ loop.index0 }}" value="0">
+            </div>
+            {% endfor %}
+            <button type="submit">Next</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Movie Magic</title>
+    <style>
+        /* Reset and font setup */
+        body {
+            margin: 0; /* Remove default browser margins */
+            font-family: Arial, sans-serif; /* Set a clean sans-serif font */
+            color: white; /* Default text color set to white */
+        }
+
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            box-sizing: border-box;
+        }
+        
+        header div {
+            display: flex; /* Enables flexbox layout for the logo and text container */
+            align-items: center; /* Vertically aligns the logo and text */
+            gap: 10px; /* Adds space between the logo and text */
+        }        
+        header img {
+            height: 50px; /* Set logo height */
+        }
+        header nav {
+            display: flex; /* Flexbox for horizontal navigation buttons */
+            gap: 15px; /* Space between navigation buttons */
+        }
+        header nav a {
+            text-decoration: none; /* Remove default underline from links */
+            color: white; /* White text color */
+            font-weight: bold; /* Bold text */
+            padding: 10px 20px; /* Padding for clickable area */
+            background-color: red; /* Button background color */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover transition */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        header nav a:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+
+        /* Background video styling */
+        .background-video {
+            position: fixed; /* Keeps the video fixed in the background */
+            top: 0;
+            left: 0;
+            width: 100%; /* Cover the full width of the screen */
+            height: 100%; /* Cover the full height of the screen */
+            object-fit: cover; /* Ensures the video scales to fill the screen */
+            z-index: -2; /* Places the video behind all content */
+        }
+
+        /* Dark overlay on top of the video for better text contrast */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+            z-index: -1; /* Keeps it above the video but below the content */
+        }
+
+        /* Centered main title and description */
+        main {
+            display: flex; /* Flexbox for vertical alignment */
+            flex-direction: column; /* Stack title and description */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 100vh; /* Take up full viewport height */
+            text-align: center; /* Center text alignment */
+        }
+        main h1 {
+            font-size: 4rem; /* Large title text */
+            margin-bottom: 10px; /* Spacing below the title */
+        }
+        main p {
+            font-size: 1.5rem; /* Subtitle text size */
+            margin-bottom: 20px; /* Spacing below the subtitle */
+        }
+
+        /* Content section for text and videos */
+        section {
+            padding: 50px; /* Padding inside each section */
+            max-width: 900px; /* Limit the width of content */
+            margin: 0 auto; /* Center horizontally */
+            display: flex; /* Flexbox for side-by-side layout */
+            gap: 20px; /* Space between text and video */
+            align-items: center; /* Align text and video vertically */
+            border-radius: 10px; /* Slightly rounded corners */
+        }
+        section p {
+            flex: 1; /* Allow text to take half the space */
+            font-size: 1.2rem; /* Slightly smaller font for text */
+        }
+        section video {
+            flex: 1; /* Allow video to take half the space */
+            max-width: 400px; /* Fixed video width */
+            height: 250px; /* Fixed video height */
+            border-radius: 10px; /* Rounded corners for videos */
+            object-fit: cover; /* Ensure video maintains aspect ratio */
+        }
+
+        /* Full-screen final section with call-to-action */
+        .final-section {
+            display: flex; /* Flexbox for vertical alignment */
+            flex-direction: column; /* Stack title, text, and button */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 100vh; /* Full-screen height */
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+            text-align: center; /* Center-align text */
+        }
+        .final-section h1 {
+            font-size: 3rem; /* Title size */
+            margin-bottom: 20px; /* Space below the title */
+        }
+        .final-section p {
+            font-size: 1.5rem; /* Subtitle size */
+            margin-bottom: 30px; /* Space below the subtitle */
+        }
+        .final-section a {
+            text-decoration: none; /* Remove underline */
+            color: white; /* White text */
+            font-weight: bold; /* Bold text */
+            padding: 15px 30px; /* Padding for button */
+            background-color: red; /* Button background color */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover transition */
+        }
+        .final-section a:hover {
+            background-color: darkred; /* Darker button on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with logo and navigation -->
+    <header>
+        <div>
+            <img src="/static/images/logo.png" alt="Movie Magic Logo">
+            <span style="font-size: 1.5rem; font-weight: bold; align-items: center;">Movie Magic</span>
+        </div>
+        <nav>
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        </nav>
+    </header>
+
+    <!-- Background video for visual appeal -->
+    <video class="background-video" autoplay loop muted>
+        <source src="https://www.shutterstock.com/shutterstock/videos/3443333971/preview/stock-footage-female-directing-a-movie-sequence-with-an-astronaut-in-open-space-studio-with-virtual-production.webm" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+
+    <!-- Main welcome message -->
+    <main>
+        <h1>Welcome to Movie Magic</h1>
+        <p>Discover movies tailored to your taste. Join now and explore the magic of cinema!</p>
+    </main>
+
+    <!-- Information and video sections -->
+    <section>
+        <p>Movie Magic is a platform designed to recommend movies tailored to your unique preferences. Our algorithm learns from your choices and offers the best suggestions for your next movie night.</p>
+        <video autoplay loop muted>
+            <source src="https://www.shutterstock.com/shutterstock/videos/1110017665/preview/stock-footage-cheerful-woman-watching-tablet-in-bed-happy-female-laughing-movie-in-evening-bedtime-relaxed.webm" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <div style="height: 30px;"></div> <!-- Spacer -->
+
+    <section>
+        <video autoplay loop muted>
+            <source src="https://www.shutterstock.com/shutterstock/videos/1094229341/preview/stock-footage-closeup-female-eyes-in-eyeglasses-late-at-night-scrolling-in-front-of-laptop-browsing-movie.webm" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p>Whether you love action-packed blockbusters, heartwarming romances, or thrilling mysteries, Movie Magic has something for everyone.</p>
+    </section>
+
+    <div style="height: 30px;"></div> <!-- Spacer -->
+
+    <section>
+        <p>Sign up today and embark on a journey to discover movies you'll fall in love with. Let Movie Magic light up your screen with cinematic brilliance!</p>
+        <video autoplay loop muted>
+            <source src="https://www.shutterstock.com/shutterstock/videos/1103748011/preview/stock-footage-human-hands-are-using-a-clapperboard-on-set-beginning-of-scene-in-film-or-tv-television-production.webm" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Final section with call-to-action -->
+    <div class="final-section">
+        <h1>Thank You for Exploring Movie Magic</h1>
+        <p>Join us now and transform your movie nights with unmatched recommendations tailored just for you!</p>
+        <a href="/signup">Join Us Now</a>
+    </div>
+</body>
+</html>

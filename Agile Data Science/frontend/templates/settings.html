@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Previous Ratings | Movie Magic</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: rgb(45, 45, 45);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+            cursor: pointer;
+            color: white;
+        }
+
+        header .nav-link {
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        header .nav-link:hover {
+            color: lightgray;
+        }
+
+        .update-profile-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 100px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .update-profile-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .update-profile-container h2 {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .update-profile-container input,
+        .update-profile-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .update-profile-container button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-profile-container button:hover {
+            background-color: darkred;
+        }
+
+        .error-message {
+            text-align: center;
+            margin-bottom: 15px;
+            color: red;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 onclick="goToRecommender()">Movie Magic</h1>
+        <a href="/recommendations" class="nav-link">Go Back to Recommendations</a>
+    </header>
+
+    <div class="carousel-container">
+        <br />
+        <br />
+        <br />
+        <br />
+        <h1>Your previous ratings</h1>
+
+        <div class="carousel">
+            {% for recommendation in recommendations %}
+            <div class="movie-card">
+                <img src="{{ recommendation.image }}" alt="{{ recommendation.title }}">
+                <h2>{{ recommendation.title }}</h2>
+                <p>{{ recommendation.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    
+    </div>
+    <!-- settings.html -->
+<div class="settings">
+    <h2></h2>
+    <ul>
+        {% for movie in rated_movies %}
+            <li>{{ movie[0] }} - Rated: {{ movie[1] }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+    <script>
+        let currentIndex = 0; // Index to track the current movie
+        const carousel = document.querySelector('.carousel');
+        const movieCards = document.querySelectorAll('.movie-card');
+
+        // Function to scroll the carousel
+        function scrollCarousel(direction) {
+            const totalMovies = movieCards.length;
+            const cardWidth = movieCards[0].offsetWidth + 20; // Include margin
+
+            // Calculate the next index
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = totalMovies - 1; // Wrap around to the last movie
+            } else if (currentIndex >= totalMovies) {
+                currentIndex = 0; // Wrap around to the first movie
+            }
+
+            // Translate the carousel
+            const offset = -currentIndex * cardWidth;
+            carousel.style.transform = `translateX(${offset}px)`;
+        }
+    </script>
+</body>
+</html>

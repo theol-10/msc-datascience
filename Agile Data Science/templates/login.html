@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- The root of the HTML document. "lang='en'" indicates the document is in English. -->
+<head>
+    <!-- Metadata and styles for the document. -->
+    <meta charset="UTF-8">
+    <!-- Sets the character encoding to UTF-8 to support a wide range of characters. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ensures the page is responsive and scales to the device's width. -->
+    <title>Login | Movie Magic</title>
+    <!-- The title of the webpage, displayed in the browser tab. -->
+
+    <style>
+        /* Overall styling for the body */
+        body {
+            margin: 0; /* Removes default margin */
+            font-family: Arial, sans-serif; /* Sets a clean sans-serif font */
+            color: white; /* Sets the text color to white */
+            display: flex; /* Enables flexbox layout */
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            min-height: 100vh; /* Ensures the body takes the full height of the viewport */
+            background: rgb(45, 45, 45); /* Dark gray background for the page */
+        }
+
+        /* Styling for the header at the top */
+        header {
+            position: fixed; /* Fixes the header at the top of the page */
+            top: 0; /* Aligns the header to the top */
+            width: 100%; /* Ensures the header spans the full width of the page */
+            display: flex; /* Enables flexbox for alignment */
+            justify-content: center; /* Centers content in the header */
+            align-items: center; /* Vertically aligns content in the header */
+            padding: 15px 20px; /* Adds padding around the header content */
+            background: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+            z-index: 10; /* Ensures the header appears above other elements */
+        }
+
+        /* Styling for the "Go Back to Main" link in the header */
+        header .back-to-main {
+            position: absolute; /* Positions the link relative to the header */
+            left: 50px; /* Aligns it to the left of the header */
+            font-size: 1.1rem; /* Sets the font size */
+            color: white; /* Sets the link text color to white */
+            text-decoration: none; /* Removes the underline */
+            display: flex; /* Makes the link align its content flexibly */
+            align-items: center; /* Vertically aligns the link content */
+            height: 100%; /* Ensures the link spans the header's height */
+            line-height: 50px; /* Vertically aligns text relative to height */
+        }
+
+        /* Hover effect for the "Go Back to Main" link */
+        header .back-to-main:hover {
+            color: lightgray; /* Changes color on hover for interactivity */
+        }
+
+        /* Styling for the title in the header */
+        header h1 {
+            font-size: 1.8rem; /* Sets the font size */
+            font-weight: bold; /* Makes the title bold */
+            color: white; /* Sets the title text color to white */
+            margin: 0; /* Removes default margins */
+            cursor: pointer; /* Indicates the title is clickable */
+        }
+
+        /* Styling for the login container (form box) */
+        .login-container {
+            background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black background */
+            border-radius: 10px; /* Rounds the corners of the container */
+            padding: 40px; /* Adds padding inside the container */
+            max-width: 400px; /* Limits the container's width to 400px */
+            width: 100%; /* Ensures it scales for smaller devices */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adds a shadow for a floating effect */
+            text-align: center; /* Centers all content inside the container */
+        }
+
+        /* Styling for the "Login" title inside the form */
+        .login-container h1 {
+            font-size: 2rem; /* Sets the font size for the title */
+            margin-bottom: 20px; /* Adds space below the title */
+        }
+
+        /* Styling for the form elements */
+        .login-container form {
+            display: flex; /* Enables flexbox for the form layout */
+            flex-direction: column; /* Stacks elements vertically */
+            gap: 15px; /* Adds space between form elements */
+        }
+
+        /* Styling for input fields */
+        .login-container input {
+            padding: 10px; /* Adds padding inside the input fields */
+            font-size: 1rem; /* Sets the font size */
+            border: none; /* Removes the default border */
+            border-radius: 5px; /* Rounds the corners */
+        }
+
+        /* Focus effect for input fields */
+        .login-container input:focus {
+            outline: none; /* Removes the default outline */
+            box-shadow: 0 0 5px red; /* Adds a red glow around the field */
+        }
+
+        /* Styling for the login button */
+        .login-container button {
+            padding: 10px; /* Adds padding inside the button */
+            font-size: 1.1rem; /* Sets the font size */
+            background-color: red; /* Makes the button red */
+            color: white; /* Sets the text color to white */
+            font-weight: bold; /* Makes the text bold */
+            border: none; /* Removes the default border */
+            border-radius: 5px; /* Rounds the corners */
+            cursor: pointer; /* Changes the cursor to indicate the button is clickable */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        /* Hover effect for the login button */
+        .login-container button:hover {
+            background-color: darkred; /* Changes the button color to dark red on hover */
+        }
+
+        /* Styling for links inside the login form */
+        .login-container a {
+            font-size: 0.9rem; /* Sets the font size for the links */
+            color: white; /* Sets the link text color to white */
+            text-decoration: underline; /* Underlines the links */
+            margin-top: 10px; /* Adds space above the links */
+            display: block; /* Stacks the links vertically */
+        }
+
+        /* Hover effect for the links */
+        .login-container a:hover {
+            color: lightgray; /* Changes the link color to light gray on hover */
+        }
+
+        /* Styling for error messages */
+        .error-message {
+            color: red; /* Sets the error message text color to red */
+            margin-bottom: 10px; /* Adds space below the error message */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+       <!-- Go Back to Main link -->
+        <a href="/" class="back-to-main">Go Back to Main</a>
+        <!-- Logo and title, clickable to return to the main page -->
+        <div onclick="window.location.href='/'">
+            <h1>Movie Magic</h1>
+        </div>
+    </header>
+
+    <!-- Login form container -->
+    <div class="login-container">
+        <h1>Login</h1> <!-- Title of the login form -->
+        {% if error %}
+        <!-- Displays an error message dynamically if login fails -->
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="/login" method="post">
+            <!-- Username input field -->
+            <input type="text" name="username" placeholder="Username" required>
+            <!-- Password input field -->
+            <input type="password" name="password" placeholder="Password" required>
+            <!-- Login button to submit the form -->
+            <button type="submit">Login</button>
+        </form>
+        <!-- Forgot password link -->
+        <a href="/forgot-password">Forgot Password?</a>
+        <!-- Create an account link -->
+        <a href="/signup">Create an Account</a>
+    </div>
+</body>
+</html>

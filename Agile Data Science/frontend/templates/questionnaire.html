@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire | Movie Magic</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgb(45, 45, 45); /* Dark gray background */
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+        }
+
+        .questionnaire-container {
+            background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black */
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .option {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .questionnaire-container button {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .questionnaire-container button:hover {
+            background-color: darkred;
+        }
+
+        /* Style for radio buttons and dropdown */
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .option select {
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Movie Magic</h1>
+    </header>
+
+    <div class="questionnaire-container">
+        <h1>Question {{ question_number }} of {{ total_questions }}</h1>
+        <p>{{ question }}</p>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('questionnaire', q=question_number) }}">
+            {% if question_type == 'radio' %}
+                {% for option in options %}
+                <div class="option">
+                    <label>
+                        <input type="radio" name="response" value="{{ option }}"
+                        {% if existing_answer == option %}checked{% endif %}>
+                        {{ option }}
+                    </label>
+                </div>
+                {% endfor %}
+            {% elif question_type == 'dropdown' %}
+                <div class="option">
+                    <select name="response" required>
+                        {% for option in options %}
+                        <option value="{{ option }}" {% if existing_answer == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            <button type="submit">Next</button>
+        </form>
+    </div>
+</body>
+</html>

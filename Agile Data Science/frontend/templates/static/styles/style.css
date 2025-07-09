@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+#recommendations .movie {
+    display: inline-block;
+    margin: 10px;
+}
+
+#recommendations img {
+    width: 120px;
+    height: 180px;
+    border-radius: 5px;
+}

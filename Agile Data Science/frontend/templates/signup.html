@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Movie Magic</title>
+    <style>
+        /* Existing CSS styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgb(45, 45, 45); /* Dark gray background */
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+        }
+        header .back-to-main {
+            position: absolute;
+            left: 30px;
+            font-size: 1.1rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            line-height: 50px; /* Vertical alignment */
+        }
+        header .back-to-main:hover {
+            color: lightgray;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            cursor: pointer;
+        }
+        .signup-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px; /* Increased width to accommodate ratings */
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .signup-container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .signup-container input, .signup-container select {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+        }
+        .signup-container input:focus, .signup-container select:focus {
+            outline: none;
+            box-shadow: 0 0 5px red;
+        }
+        .signup-container button {
+            padding: 10px;
+            font-size: 1.1rem;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .signup-container button:hover {
+            background-color: darkred;
+        }
+        .signup-container a {
+            font-size: 0.9rem;
+            color: white;
+            text-decoration: underline;
+            margin-top: 25px;
+            display: inline-block;
+        }
+        .signup-container a:hover {
+            color: lightgray;
+        }
+        .movie-rating-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .movie-rating-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .movie-list {
+            max-height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 15px;
+        }
+        .movie-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .movie-item:last-child {
+            margin-bottom: 0;
+        }
+        .star-rating {
+            display: flex;
+            flex-direction: row; /* Ensure stars are left-to-right */
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 1.5rem;
+            color: gray;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        /* Change color on hover and when checked */
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .controls input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        .controls button {
+            padding: 8px 12px;
+            font-size: 1rem;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .controls button:hover {
+            background-color: #777;
+        }
+        /* Error message styling */
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle hover and click for star ratings
+            const starRatings = document.querySelectorAll('.star-rating');
+
+            starRatings.forEach(ratingDiv => {
+                const movieId = ratingDiv.getAttribute('data-movie-id');
+                const stars = ratingDiv.querySelectorAll('label');
+
+                stars.forEach((star, index) => {
+                    const starValue = index + 1;
+
+                    // Highlight stars on hover
+                    star.addEventListener('mouseover', () => {
+                        for (let i = 0; i < starValue; i++) {
+                            stars[i].style.color = 'gold';
+                        }
+                        for (let i = starValue; i < stars.length; i++) {
+                            stars[i].style.color = 'gray';
+                        }
+                    });
+
+                    // Reset stars when hover is removed
+                    star.addEventListener('mouseout', () => {
+                        const selectedRating = ratingDiv.querySelector(`input[name="rating-${movieId}"]:checked`);
+                        const ratingValue = selectedRating ? parseInt(selectedRating.value) : 0;
+
+                        for (let i = 0; i < ratingValue; i++) {
+                            stars[i].style.color = 'gold';
+                        }
+                        for (let i = ratingValue; i < stars.length; i++) {
+                            stars[i].style.color = 'gray';
+                        }
+                    });
+
+                    // Fix the rating on click
+                    star.addEventListener('click', () => {
+                        ratingDiv.querySelector(`#star${starValue}-${movieId}`).checked = true;
+
+                        for (let i = 0; i < starValue; i++) {
+                            stars[i].style.color = 'gold';
+                        }
+                        for (let i = starValue; i < stars.length; i++) {
+                            stars[i].style.color = 'gray';
+                        }
+                    });
+                });
+            });
+
+            // Handle form submission
+            document.querySelector('form').addEventListener('submit', function(event) {
+                // Collect all ratings
+                const ratings = [];
+                const ratingInputs = document.querySelectorAll('input[type="radio"]:checked');
+                ratingInputs.forEach(input => {
+                    const movieId = input.name.split('-')[1];
+                    const rating = input.value;
+                    ratings.push(`${movieId}:${rating}`); // 'movieId:rating'
+                });
+
+                if (ratings.length < 5) {
+                    alert('Please rate at least 5 movies.');
+                    event.preventDefault();
+                }
+            });
+
+            // Handle search functionality
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-bar').value.trim();
+                if (query === "") return;
+
+                fetch(`/search_movies?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list');
+                        movieList.innerHTML = '';
+                        if (data.length === 0) {
+                            movieList.innerHTML = '<p>No movies found.</p>';
+                            return;
+                        }
+                        data.forEach(movie => {
+                            const movieItem = document.createElement('div');
+                            movieItem.className = 'movie-item';
+                            
+                            const title = document.createElement('span');
+                            title.textContent = movie[1];
+                            
+                            const starRating = document.createElement('div');
+                            starRating.className = 'star-rating';
+                            starRating.setAttribute('data-movie-id', movie[0]);
+
+                            for (let i = 1; i <= 5; i++) { // Left to right
+                                const radio = document.createElement('input');
+                                radio.type = 'radio';
+                                radio.id = `star${i}-${movie[0]}`;
+                                radio.name = `rating-${movie[0]}`;
+                                radio.value = i;
+
+                                const label = document.createElement('label');
+                                label.htmlFor = `star${i}-${movie[0]}`;
+                                label.className = 'star';
+                                label.innerHTML = '&#9733;'; // Star character
+
+                                starRating.appendChild(radio);
+                                starRating.appendChild(label);
+                            }
+
+                            movieItem.appendChild(title);
+                            movieItem.appendChild(starRating);
+                            movieList.appendChild(movieItem);
+                        });
+
+                        // Re-attach event listeners to new stars
+                        // No additional listeners needed as they are already handled
+                    });
+            });
+
+            // Handle reload functionality
+            document.getElementById('reload-button').addEventListener('click', () => {
+                fetch('/reload_movies')
+                    .then(response => response.json())
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list');
+                        movieList.innerHTML = '';
+                        if (data.length === 0) {
+                            movieList.innerHTML = '<p>No movies available.</p>';
+                            return;
+                        }
+                        data.forEach(movie => {
+                            const movieItem = document.createElement('div');
+                            movieItem.className = 'movie-item';
+                            
+                            const title = document.createElement('span');
+                            title.textContent = movie.title;
+                            
+                            const starRating = document.createElement('div');
+                            starRating.className = 'star-rating';
+                            starRating.setAttribute('data-movie-id', movie.movieId);
+
+                            for (let i = 1; i <= 5; i++) { // Left to right
+                                const radio = document.createElement('input');
+                                radio.type = 'radio';
+                                radio.id = `star${i}-${movie.movieId}`;
+                                radio.name = `rating-${movie.movieId}`;
+                                radio.value = i;
+
+                                const label = document.createElement('label');
+                                label.htmlFor = `star${i}-${movie.movieId}`;
+                                label.className = 'star';
+                                label.innerHTML = '&#9733;'; // Star character
+
+                                starRating.appendChild(radio);
+                                starRating.appendChild(label);
+                            }
+
+                            movieItem.appendChild(title);
+                            movieItem.appendChild(starRating);
+                            movieList.appendChild(movieItem);
+                        });
+
+                        // Re-attach event listeners to new stars
+                        // No additional listeners needed as they are already handled
+                    });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Go Back to Main Link -->
+    <header>
+        <a href="/" class="back-to-main">Go Back to Main</a>
+        <div onclick="window.location.href='/'">
+            <h1>Movie Magic</h1>
+        </div>
+    </header>
+
+    <!-- Signup Form -->
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="/signup" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            
+            <!-- Movie Rating Section -->
+            <div class="movie-rating-section">
+                <h2>Rate Movies</h2>
+                <div class="controls">
+                    <input type="text" id="search-bar" placeholder="Search for movies...">
+                    <button type="button" id="search-button">Search</button>
+                </div>
+                <div class="movie-list" id="movie-list">
+                    {% for movie in movies %}
+                    <div class="movie-item">
+                        <span>{{ movie[1] }}</span>
+                        <div class="star-rating" data-movie-id="{{ movie[0] }}">
+                            {% for i in range(1, 6) %} <!-- Left to right -->
+                            <input type="radio" id="star{{ i }}-{{ movie[0] }}" name="rating-{{ movie[0] }}" value="{{ i }}">
+                            <label for="star{{ i }}-{{ movie[0] }}" class="star">&#9733;</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" id="reload-button">Reload Movies</button>
+            </div>
+            
+            <button type="submit">Sign Up</button>
+        </form>
+        <a href="/login">Back to Login</a>
+    </div>
+</body>
+</html>
